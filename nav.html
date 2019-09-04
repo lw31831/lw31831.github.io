@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			*{margin: 0;padding: 0;}
+			[v-cloak]{
+				display: none;
+			}
+			#box{
+				width: 80%;
+				margin: 0 auto;
+			}
+			.t1-enter,.t1-leave-to{
+				opacity: 0;
+				top: 120px !important;
+			}
+			.t1-enter-active,.t1-leave-active{
+				transition: all 0.35s;
+			}
+			.tn2-enter,.tn2-leave-to{
+				opacity: 0;
+				top: 120px !important;
+			}
+			.tn2-enter-active,.tn2-leave-active{
+				transition: all 0.35s;
+			}
+			.t2-enter,.t2-leave-to{
+				opacity: 0;
+				left: -120px !important;
+			}
+			.t2-enter-active,.t2-leave-active{
+				transition: all 0.35s;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box" v-cloak>
+			<div style="position: relative;">
+				<div style="height: 60px;line-height: 60px;font-size: 22px;color: white;background-color: #000000;text-align: center;" @click="btn">首页</div>
+				<transition :name="tn">
+					<div style="position: absolute;top: 60px;left: 0;width: 100%;" v-show="open">
+						<div v-for="i in arr" style="color: white;line-height: 40px;font-size: 18px;background: #000;position: relative;text-align: center;">
+							{{i.title}}
+							<span v-if="i.arr.length" style="position: absolute;right: 30px;top: 0;" @click="btn2(i.arr)">→</span>
+						</div>
+					</div>
+				</transition>
+				<transition name="tn2">
+					<div style="position: absolute;top: 60px;left: 0;width: 100%;" v-show="open2">
+						<div style="color: white;line-height: 40px;font-size: 18px;background: #000;position: relative;text-align: center;" @click="btn3">
+							返回上一级
+						</div>
+						<div v-for="i in arr2" style="color: white;line-height: 40px;font-size: 18px;background: #000;position: relative;text-align: center;">
+							{{i}}
+						</div>
+					</div>
+				</transition>
+			</div>
+		</div>
+	</body>
+	<script src="vue.js"></script>
+	<script type="text/javascript">
+		new Vue({
+			el:"#box",
+			data:{
+				tn:'t1',
+				open:false,
+				open2:false,
+				arr2:'',
+				arr:[
+					{title:'产品',arr:['产品1','产品2','产品3']},
+					{title:'销售',arr:[]},
+					{title:'员工',arr:['员工1','员工2']},
+					{title:'客服',arr:['客服1','客服2']},
+					{title:'联系',arr:[]},
+				],
+			},
+			methods:{
+				btn(){
+					if(this.open2){
+						this.open2 = false
+					}else{
+						this.tn = 't1'
+						this.open = !this.open
+					}
+				},
+				btn2(arr2){
+					this.arr2 = arr2
+					this.tn = 't2'
+					this.open = false
+					setTimeout(()=>{
+						this.open2 = true
+					},200)
+				},
+				btn3(){
+					this.open2 = false
+					setTimeout(()=>{
+						this.open = true
+					},200)
+				}
+			}
+		})
+	</script>
+</html>
